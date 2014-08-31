@@ -13,14 +13,20 @@ public class Setup implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-//        AddressRepository addressRepository = new AddressRepository();
-//        ContactRepository contactRepository = new ContactRepository();
+        AddressRepository addressRepository = new AddressRepository();
+        ContactRepository contactRepository = new ContactRepository();
         try {
-            new AddressRepository().init();
-            new ContactRepository().init();
-//            Address address = new Address("150 West Tasman Dr.", "San Jose", "CA", "95134");
-//
-//            addressRepository.create(address);
+            addressRepository.init();
+            contactRepository.init();
+/*
+
+            addressRepository.create(new Address("150 West Tasman Dr.", "San Jose", "CA", "95134"));
+            addressRepository.create(new Address("Evergreen Tr.", "Springfield", "??", "??"));
+
+            contactRepository.create(new Contact("Serge", 0L));
+            contactRepository.create(new Contact("Homer", 0L));
+            contactRepository.create(new Contact("Bard", 0L));
+*/
 
         } catch (SQLException e) {
             e.printStackTrace();
