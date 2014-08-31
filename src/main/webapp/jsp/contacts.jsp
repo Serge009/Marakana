@@ -14,6 +14,7 @@
 <body>
 
 <ul>
+    <a href="contact?add">Add New Contact</a>
 <c:forEach var="contact" items="${contacts}">
     <li><a href="#">${contact.name}</a></li>
 </c:forEach>
