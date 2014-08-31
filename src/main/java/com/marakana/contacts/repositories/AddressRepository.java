@@ -54,7 +54,7 @@ public class AddressRepository {
             try {
                 ResultSet result = statement.executeQuery("select * from address where id = " + id);
                 try {
-                    if(!result.next()){
+                    if (!result.next()) {
                         return null;
                     } else {
                         return unmarshal(result);
@@ -73,15 +73,66 @@ public class AddressRepository {
     }
 
     public void create(Address address) throws SQLException {
+        Connection connection = dataSource.getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            try {
+                statement.executeUpdate("insert into address (street, state, city, zip) values ('"
+                                + address.getStreet() + "', '" + address.getState() + "', '"
+                                + address.getCity() + "', '" + address.getZip() + "')",
+                        Statement.RETURN_GENERATED_KEYS);
 
+                ResultSet resultSet = statement.getGeneratedKeys();
+                try {
+                    if (resultSet.next())
+                        address.setId(resultSet.getLong("id"));
+                } finally {
+                    resultSet.close();
+                }
+
+            } finally {
+                statement.close();
+            }
+        } finally {
+            connection.close();
+        }
+    }
+
+    public void update(Address address) throws SQLException {
+        Connection connection = dataSource.getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            try {
+                statement.executeUpdate("update address set street = '"
+                        + address.getStreet() + "', state = '"
+                        + address.getState() + "', city = '"
+                        + address.getCity() + "', zip = '"
+                        + address.getZip() + "') where id = "
+                        + address.getId());
+            } finally {
+                statement.close();
+            }
+        } finally {
+            connection.close();
+        }
     }
 
     public void delete(Address address) throws SQLException {
-
+        Connection connection = dataSource.getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            try {
+                statement.executeUpdate("delete from address where id = "+ address.getId());
+            } finally {
+                statement.close();
+            }
+        } finally {
+            connection.close();
+        }
     }
 
     private static Address unmarshal(ResultSet results) throws SQLException {
-        Address address =  new Address();
+        Address address = new Address();
         address.setId(results.getLong("id"));
         address.setStreet(results.getString("street"));
         address.setCity(results.getString("city"));
