@@ -1,4 +1,4 @@
-package com.marakana.contacts;
+package com.marakana.contacts.entities;
 
 /**
  * Created by SERGE on 31.08.2014.
