@@ -1,7 +1,7 @@
 package com.marakana.contacts.servlets;
 
-import com.marakana.contacts.entities.Address;
 import com.marakana.contacts.repositories.AddressRepository;
+import com.marakana.contacts.repositories.ContactRepository;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -13,11 +13,14 @@ public class Setup implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        AddressRepository addressRepository = new AddressRepository();
+//        AddressRepository addressRepository = new AddressRepository();
+//        ContactRepository contactRepository = new ContactRepository();
         try {
-            addressRepository.init();
-            Address address = new Address("150 West Tasman Dr.", "San Jose", "CA", "95134");
-            addressRepository.create(address);
+            new AddressRepository().init();
+            new ContactRepository().init();
+//            Address address = new Address("150 West Tasman Dr.", "San Jose", "CA", "95134");
+//
+//            addressRepository.create(address);
 
         } catch (SQLException e) {
             e.printStackTrace();
