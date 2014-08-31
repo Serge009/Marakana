@@ -11,6 +11,13 @@ public class Contact {
 
     private Long addressId;
 
+    public Contact() {}
+
+    public Contact(String name, Long addressId) {
+        this.name = name;
+        this.addressId = addressId;
+    }
+
     public Long getId() {
         return id;
     }
