@@ -39,6 +39,14 @@ public class ContactServlet extends HttpServlet {
 
                 if(req.getParameter("edit") != null){
                     req.getRequestDispatcher("jsp/editContact.jsp").forward(req, resp);
+
+                }else if(req.getParameter("delete") != null) {
+
+
+                    contactRepository.delete(contact);
+                    addressRepository.delete(address);
+
+                    resp.sendRedirect("contacts");
                 } else {
                     req.getRequestDispatcher("jsp/viewContact.jsp").forward(req, resp);
                 }
@@ -82,7 +90,7 @@ public class ContactServlet extends HttpServlet {
                 addressRepository.update(address);
 
                 resp.sendRedirect("contact?id=" + contact.getId());
-            } else {
+            }  else {
                 super.doPost(req, resp);
             }
         } catch (SQLException e) {

@@ -12,6 +12,7 @@
             <li>${address.city}, ${address.state} ${address.zip}</li>
         </ul>
         <a href="contact?edit&id=${contact.id}">Edit contact</a>
+        <a href="contact?delete&id=${contact.id}">Delete contact</a>
         <a href="contacts">Back to contact list</a>
 </body>
 </html>
