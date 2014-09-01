@@ -11,6 +11,7 @@
             <li>${address.street}</li>
             <li>${address.city}, ${address.state} ${address.zip}</li>
         </ul>
+        <a href="contact?edit&id=${contact.id}">Edit contact</a>
         <a href="contacts">Back to contact list</a>
 </body>
 </html>

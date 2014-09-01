@@ -26,20 +26,27 @@ public class ContactServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getParameter("add") != null) {
-            req.getRequestDispatcher("jsp/addContact.jsp").forward(req, resp);
-        } else {
-            long id = Long.parseLong(req.getParameter("id"));
-            try {
+        try {
+            if (req.getParameter("add") != null) {
+                req.getRequestDispatcher("jsp/addContact.jsp").forward(req, resp);
+            } else {
+                long id = Long.parseLong(req.getParameter("id"));
+
                 Contact contact = contactRepository.find(id);
                 Address address = addressRepository.find(contact.getAddressId());
                 req.setAttribute("contact", contact);
                 req.setAttribute("address", address);
 
-                req.getRequestDispatcher("jsp/viewContact.jsp").forward(req, resp);
-            } catch (SQLException e) {
-                throw new ServletException(e);
+                if(req.getParameter("edit") != null){
+                    req.getRequestDispatcher("jsp/editContact.jsp").forward(req, resp);
+                } else {
+                    req.getRequestDispatcher("jsp/viewContact.jsp").forward(req, resp);
+                }
+
+
             }
+        } catch (SQLException e) {
+            throw new ServletException(e);
         }
     }
 
@@ -59,9 +66,24 @@ public class ContactServlet extends HttpServlet {
                 contactRepository.create(contact);
 
                 resp.sendRedirect("contact?id=" + contact.getId());
+            } else if (req.getParameter("edit") != null) {
+                long id = Long.parseLong(req.getParameter("id"));
+
+                Contact contact = contactRepository.find(id);
+                Address address = addressRepository.find(contact.getAddressId());
+
+                contact.setName(req.getParameter("name"));
+                address.setStreet(req.getParameter("street"));
+                address.setState(req.getParameter("state"));
+                address.setZip(req.getParameter("zip"));
+                address.setCity(req.getParameter("city"));
+
+                contactRepository.update(contact);
+                addressRepository.update(address);
+
+                resp.sendRedirect("contact?id=" + contact.getId());
             } else {
-                //TODO
-                super.doGet(req, resp);
+                super.doPost(req, resp);
             }
         } catch (SQLException e) {
             e.printStackTrace();
