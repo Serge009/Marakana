@@ -6,6 +6,10 @@
 		<res-ref-name>jdbc/trainingdb</res-ref-name>
 	</resource-ref>
 
+    <persistence-unit-ref>
+        <persistence-unit-ref-name>training</persistence-unit-ref-name>
+    </persistence-unit-ref>
+
     <servlet>
         <servlet-name>jsp</servlet-name>
     </servlet>
