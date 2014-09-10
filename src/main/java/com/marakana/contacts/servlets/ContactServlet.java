@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Created by SERGE on 31.08.2014.
@@ -26,7 +25,7 @@ public class ContactServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
+
             if (req.getParameter("add") != null) {
                 req.getRequestDispatcher("jsp/addContact.jsp").forward(req, resp);
             } else {
@@ -53,25 +52,23 @@ public class ContactServlet extends HttpServlet {
 
 
             }
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        try {
+
             if (req.getParameter("add") != null) {
                 Address address = new Address(req.getParameter("street"),
                         req.getParameter("city"),
                         req.getParameter("state"),
                         req.getParameter("zip"));
 
-                addressRepository.create(address);
+                addressRepository.save(address);
 
                 Contact contact = new Contact(req.getParameter("name"), address.getId());
-                contactRepository.create(contact);
+                contactRepository.save(contact);
 
                 resp.sendRedirect("contact?id=" + contact.getId());
             } else if (req.getParameter("edit") != null) {
@@ -86,16 +83,14 @@ public class ContactServlet extends HttpServlet {
                 address.setZip(req.getParameter("zip"));
                 address.setCity(req.getParameter("city"));
 
-                contactRepository.update(contact);
-                addressRepository.update(address);
+                contactRepository.save(contact);
+                addressRepository.save(address);
 
                 resp.sendRedirect("contact?id=" + contact.getId());
             }  else {
                 super.doPost(req, resp);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
 
     }
 }
