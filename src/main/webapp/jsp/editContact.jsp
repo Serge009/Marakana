@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Edit Contact</title>
@@ -13,6 +14,7 @@
 <body>
 <a href="contacts">Back to contact list</a>
     <form action="contact" method="post">
+        <c:set var="address" value="${contact.address}" />
         <input type="text" name="name" placeholder="Name" value="${contact.name}" />
         <input type="text" name="city" placeholder="City" value="${address.city}" />
         <input type="text" name="street" placeholder="Street" value="${address.street}" />

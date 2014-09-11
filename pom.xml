@@ -35,7 +35,7 @@
 					<scanIntervalSeconds>1</scanIntervalSeconds>
                     <stopKey>13</stopKey>
                     <stopPort>5000</stopPort>
-				</configuration>
+                </configuration>
 				<dependencies>
 					<dependency>
 						<groupId>org.hsqldb</groupId>

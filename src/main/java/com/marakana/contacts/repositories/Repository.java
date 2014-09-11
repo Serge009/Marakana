@@ -20,17 +20,20 @@ public class Repository<E> {
         return em.find(entityClass, id);
     }
 
-    public void save(E entity) {
-        em.merge(entity);
+    public E save(E entity) {
+        em.getTransaction().begin();
+        entity = em.merge(entity);
+        em.getTransaction().commit();
+        return entity;
     }
 
     public void delete(E entity) {
+        em.getTransaction().begin();
         em.remove(entity);
+        em.getTransaction().commit();
     }
 
     public List<E> findAll(){
-        System.out.println(em);
-        System.out.println("from " + entityClass.getSimpleName());
         return em.createQuery("from " + entityClass.getSimpleName(), entityClass).getResultList();
     }
 }

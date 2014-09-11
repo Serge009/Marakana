@@ -19,8 +19,6 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/contact"})
 public class ContactServlet extends HttpServlet {
 
-    private final AddressRepository addressRepository = new AddressRepository();
-
     private final ContactRepository contactRepository = new ContactRepository();
 
     @Override
@@ -32,9 +30,8 @@ public class ContactServlet extends HttpServlet {
                 long id = Long.parseLong(req.getParameter("id"));
 
                 Contact contact = contactRepository.find(id);
-                Address address = addressRepository.find(contact.getAddressId());
                 req.setAttribute("contact", contact);
-                req.setAttribute("address", address);
+
 
                 if(req.getParameter("edit") != null){
                     req.getRequestDispatcher("jsp/editContact.jsp").forward(req, resp);
@@ -43,7 +40,6 @@ public class ContactServlet extends HttpServlet {
 
 
                     contactRepository.delete(contact);
-                    addressRepository.delete(address);
 
                     resp.sendRedirect("contacts");
                 } else {
@@ -65,17 +61,15 @@ public class ContactServlet extends HttpServlet {
                         req.getParameter("state"),
                         req.getParameter("zip"));
 
-                addressRepository.save(address);
-
-                Contact contact = new Contact(req.getParameter("name"), address.getId());
-                contactRepository.save(contact);
+                Contact contact = new Contact(req.getParameter("name"), address);
+                contact = contactRepository.save(contact);
 
                 resp.sendRedirect("contact?id=" + contact.getId());
             } else if (req.getParameter("edit") != null) {
                 long id = Long.parseLong(req.getParameter("id"));
 
                 Contact contact = contactRepository.find(id);
-                Address address = addressRepository.find(contact.getAddressId());
+                Address address = contact.getAddress();//addressRepository.find(contact.getAddress());
 
                 contact.setName(req.getParameter("name"));
                 address.setStreet(req.getParameter("street"));
@@ -84,7 +78,6 @@ public class ContactServlet extends HttpServlet {
                 address.setCity(req.getParameter("city"));
 
                 contactRepository.save(contact);
-                addressRepository.save(address);
 
                 resp.sendRedirect("contact?id=" + contact.getId());
             }  else {
